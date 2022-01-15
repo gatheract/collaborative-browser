@@ -3,7 +3,7 @@ let browser = {
         tabNb: 0,
         currentTab: 0,
         tabId: [],
-        version: 1.2,
+        version: 1.3,
         bgColor: "",
         txtColor: "",
     },
@@ -206,6 +206,14 @@ let browser = {
         document.querySelector("#searchbar").value = document.querySelector(".tab.current").dataset.url;
         document.querySelector("#view-container").querySelector(".view.current").src = browser.verifyProtocol(document.querySelector("#tab-container").querySelector(".tab.current").dataset.url);
         document.querySelector(".tab.current").querySelector(".title").innerText = browser.verifyProtocol(document.querySelector(".tab.current").dataset.url).length <= 30 ? browser.verifyProtocol(document.querySelector(".tab.current").dataset.url).split("/")[2] : browser.verifyProtocol(document.querySelector(".tab.current").dataset.url).substring(14, length - 1) + "...";
+        sendUrl(browser.verifyProtocol(document.querySelector("#tab-container").querySelector(".tab.current").dataset.url));
+    
+    },
+    goTo: (url) => {
+
+        document.querySelector("#searchbar").value = url;
+        document.querySelector("#view-container").querySelector(".view.current").src = browser.verifyProtocol(url);
+        document.querySelector(".tab.current").querySelector(".title").innerText = browser.verifyProtocol(url).substring(14, length - 1) + "...";
     
     },
     generateId: () => {
@@ -251,3 +259,33 @@ let browser = {
 }
 
 browser.boot();
+
+function sendUrl(url) {
+
+    if (! /^gatheract:/i.test(url) && ! /^data:/i.test(url)) {
+        let data = {
+            type: 'url',
+            data: url
+        };
+        gatheract.sendMessage(data);
+    }
+}
+
+let config = {
+    appId: 'collaborative-browser',
+    events: {
+        connected: event => { },
+        channelInfo: event => {
+            if (event.newUser) {
+                sendUrl(document.querySelector('.tab.current').dataset.url);
+            }
+        },
+        appMessage: event => {
+            if (event.type === 'url') {
+                browser.goTo(event.data)
+            }
+        }
+    }
+};
+
+gatheract.init(config);
