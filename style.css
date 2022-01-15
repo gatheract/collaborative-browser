@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
 
 :root {
-    --bg: indigo;
+    --bg: #434190;
     --txt: #fff;
 }
 
@@ -31,6 +31,7 @@
 
 #tab-menu {
     background: var(--txt);
+    display: none;
 }
 
 #tab-container {
