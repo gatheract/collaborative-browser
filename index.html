@@ -20,8 +20,9 @@
         </div>
 
         <div id="menu">
+            <!-- Can't send history due to cross-site-scripting security restrictions
             <div class="history-btn" onclick="window.history.back();">&lt;</div>
-            <div class="history-btn" onclick="window.history.forward();">&gt;</div>
+            <div class="history-btn" onclick="window.history.forward();">&gt;</div>-->
             <div class="history-btn" onclick="browser.reloadTab()">↺</div>
             <input id="searchbar">
 
